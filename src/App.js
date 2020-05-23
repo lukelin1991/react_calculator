@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
 
-export default class App extends React.component {
+export default class App extends Component {
 
   state = {
     total: null,
@@ -12,7 +12,7 @@ export default class App extends React.component {
   render(){
     return (
       <div className="App">
-        
+
       </div>
     );
   }
