@@ -35,7 +35,7 @@ export default function calculate(obj, buttonName){
             total: null,
         }
     }
-    
+
     if (buttonName ==='%'){
         if (obj.operation && obj.next){
             const result = operate(obj.total, obj.next, obj.operation)
@@ -57,5 +57,55 @@ export default function calculate(obj, buttonName){
         return {}
     }
 
+    if (buttonName === '.'){
+        if (obj.next){
+            // ignore . if next number already has a "."
+            if (obj.next.includes('.')){
+                return {}
+            }
+            return { next: obj.next + '.'}
+        }
+        return { next: '0.' }
+    }
 
+    if (buttonName === '='){
+        if (obj.next && obj.operation){
+            return {
+                total: operate(obj.total, obj.next, obj.operation),
+                next: null,
+                operation: null,
+            }
+        } else {
+            //clicking = with no operation does nothing. 
+            return {}
+        }
+    }
+
+    if (buttonName === '+/-'){
+        if (obj.next){
+            return { next: (-1 * parseFloat(obj.next)).toString() }
+        }
+        if (obj.total){
+            return { total: (-1 * parseFloat(obj.total)).toString() }
+        }
+        return {}
+    }
+    // if user presses an operation button while there is an existing operation.
+    if (obj.operation){
+        return {
+            total: operate(obj.total, obj.next, obj.operation),
+            next: null,
+            operation: buttonName,
+        }
+    }
+
+    if (!obj.next){
+        return { operation: buttonName };
+    }
+
+    return {
+        total: obj.next,
+        next: null,
+        operation: buttonName,
+    }
 }
